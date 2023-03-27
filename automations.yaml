@@ -1,0 +1,815 @@
+- id: '1629645973571'
+  alias: Wiktor - Start podcasts
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: light.wiktor_podswietlenie
+    attribute: brightness
+    above: '250'
+  condition: []
+  action:
+  - service: script.play_audiobook
+    data: {}
+    entity_id: media_player.googlehome8430
+  mode: single
+- id: '1629646080914'
+  alias: On staircase movement
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: 9d385dd528da98241d87b848822cb7c0
+    entity_id: binary_sensor.wejscie_ruch
+    domain: binary_sensor
+  condition: []
+  action:
+  - service: shell_command.record_staircase_shell
+    data: {}
+  mode: single
+- id: '1629651603471'
+  alias: Play next audiobook
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: media_player.googlehome9885
+    from: playing
+  condition:
+  - condition: numeric_state
+    entity_id: light.wiktor_podswietlenie
+    above: '250'
+    attribute: brightness
+  action:
+  - service: script.play_audiobook
+    data: {}
+  mode: single
+- id: '1629652066468'
+  alias: End audiobooks
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: light.wiktor_podswietlenie
+    attribute: brightness
+    below: '250'
+  condition: []
+  action:
+  - service: media_player.media_stop
+    data: {}
+    entity_id: media_player.googlehome9885
+  mode: single
+- id: '1632081979099'
+  alias: Turn on boiler heating
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.heating_activated
+    to: 'on'
+    for: 00:05:00
+  condition:
+  - condition: state
+    entity_id: binary_sensor.boiler_heating_activated
+    state: 'off'
+  - condition: state
+    entity_id: input_boolean.away_mode
+    state: 'off'
+  action:
+  - service: mqtt.publish
+    data:
+      topic: ems-esp/boiler
+      payload: '{"cmd":"heatingactivated", "data":"on"}'
+  mode: single
+- id: '1632082009760'
+  alias: Turn off boiler heating
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.heating_activated
+    to: 'off'
+    for: 00:05:00
+  condition:
+  - condition: state
+    entity_id: binary_sensor.boiler_heating_activated
+    state: 'on'
+  action:
+  - service: mqtt.publish
+    data:
+      topic: ems-esp/boiler
+      payload: '{"cmd":"heatingactivated", "data":"off"}'
+  mode: single
+- id: '1632424621677'
+  alias: Run home_temperature.py
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: '*'
+  condition: []
+  action:
+  - service: python_script.home_temperature
+    data: {}
+  mode: single
+- id: '1632856526697'
+  alias: Update boiler heating temperature
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_number.heating_temperature
+    for: 00:05:00
+  condition: []
+  action:
+  - service: mqtt.publish
+    data:
+      topic: ems-esp/boiler
+      payload: '{"cmd":"heatingtemp", "data":"{{ states("input_number.heating_temperature")
+        }}"}'
+  mode: single
+- id: '1633088124583'
+  alias: Monitor EMS-ESP MQTT Integration
+  trigger:
+  - platform: state
+    entity_id: sensor.boiler_total_uba_operating_time
+    for: 00:15:00
+  action:
+  - device_id: 26f771576afa0755ac0620c1529826d3
+    domain: mobile_app
+    type: notify
+    message: ' EMS-ESP disconnected from MQTT server!'
+    title: ''
+  mode: single
+- id: '1634371796871'
+  alias: Away mode on
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.away_mode
+    to: 'on'
+  condition: []
+  action:
+  - service: mqtt.publish
+    data:
+      topic: ems-esp/boiler
+      payload: '{"cmd":"heatingactivated", "data":"off"}'
+  - service: mqtt.publish
+    data:
+      topic: ems-esp/boiler
+      payload: '{"cmd":"wwactivated", "data":"off"}'
+  - service: input_boolean.turn_off
+    data: {}
+    entity_id: input_boolean.heating_activated
+  - service: automation.turn_off
+    data: {}
+    entity_id: automation.run_home_temperature_py
+  - service: automation.turn_off
+    data: {}
+    entity_id: automation.turn_off_boiler_heating
+  - service: automation.turn_off
+    data: {}
+    entity_id: automation.turn_on_boiler_heating
+  mode: single
+- id: '1634372142773'
+  alias: Away mode off
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.away_mode
+    to: 'off'
+  condition: []
+  action:
+  - service: mqtt.publish
+    data:
+      topic: ems-esp/boiler
+      payload: '{"cmd":"heatingactivated", "data":"on"}'
+  - service: mqtt.publish
+    data:
+      topic: ems-esp/boiler
+      payload: '{"cmd":"wwactivated", "data":"on"}'
+  - service: input_boolean.turn_on
+    data: {}
+    entity_id: input_boolean.heating_activated
+  - service: automation.turn_on
+    data: {}
+    entity_id: automation.run_home_temperature_py
+  - service: automation.turn_on
+    data: {}
+    entity_id: automation.turn_off_boiler_heating
+  - service: automation.turn_on
+    data: {}
+    entity_id: automation.turn_on_boiler_heating
+  mode: single
+- id: '1642870406845'
+  alias: Albert - Start podcasts
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: light.albert_podswietlenie_2
+    attribute: brightness
+    above: '250'
+  condition: []
+  action:
+  - service: script.albert_play_random_podcast
+    data: {}
+    entity_id: media_player.googlehome8430
+  mode: single
+- id: '1667689079660'
+  alias: 'Turn off siren '
+  description: ''
+  trigger:
+  - type: powered
+    platform: device
+    device_id: cca90954d9f8aae1f27c3e30d8fb5d0c
+    entity_id: binary_sensor.gabinet_przycisk
+    domain: binary_sensor
+  condition: []
+  action:
+  - type: turn_off
+    device_id: fb6cad1c3bcbe3fd6c1a747e2b482a76
+    entity_id: switch.pralnia_alarm_uzbrojony
+    domain: switch
+  mode: single
+- id: '1667838417147'
+  alias: IoT Creators Webhook
+  description: ''
+  trigger:
+  - platform: webhook
+    webhook_id: iotcreators
+  condition: []
+  action:
+  - service: python_script.process_iotcreators
+    data_template:
+      data: '{{ trigger.json.reports[0].value }}'
+  - service: logbook.log
+    data:
+      name: webhook
+      message: 'base16 data received: {{ trigger.json.reports[0].value }}'
+  mode: single
+- id: '1668166981278'
+  alias: Turn on Office Room's LED when alarm is armed
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - switch.pralnia_alarm_uzbrojony
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - type: turn_on
+    device_id: cca90954d9f8aae1f27c3e30d8fb5d0c
+    entity_id: light.gabinet_led
+    domain: light
+  mode: single
+- id: '1668167076492'
+  alias: Turn off Office Room's LED when alarm is armed
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - switch.pralnia_alarm_uzbrojony
+    from: 'on'
+    to: 'off'
+  condition: []
+  action:
+  - type: turn_off
+    device_id: cca90954d9f8aae1f27c3e30d8fb5d0c
+    entity_id: light.gabinet_led
+    domain: light
+  mode: single
+- id: '1668864684457'
+  alias: Turn on plant lamps
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: 0
+  condition: []
+  action:
+  - type: turn_on
+    device_id: 45d6deefce11be4f0cf4e8a7e4fb145b
+    entity_id: switch.smart_plug_b_przelacznik
+    domain: switch
+  - type: turn_on
+    device_id: bd8e09fc131784d98df8d4b46e60025a
+    entity_id: switch.smart_plug_c_przelacznik
+    domain: switch
+  mode: single
+- id: '1668864818364'
+  alias: Turn off plant lamps
+  description: ''
+  trigger:
+  - platform: time
+    at: '22:00:00'
+  condition: []
+  action:
+  - type: turn_off
+    device_id: 45d6deefce11be4f0cf4e8a7e4fb145b
+    entity_id: switch.smart_plug_b_przelacznik
+    domain: switch
+  - type: turn_off
+    device_id: bd8e09fc131784d98df8d4b46e60025a
+    entity_id: switch.smart_plug_c_przelacznik
+    domain: switch
+  mode: single
+- id: '1673344793491'
+  alias: Garage door is open for more than 5 minutes
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - cover.garage_door
+    to: open
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  condition: []
+  action:
+  - service: notify.notify
+    data:
+      message: Brama garażowa jest otwarta przez ponad 5 minut!
+      title: Brama otwarta ponad 5 min.
+  mode: single
+- id: '1674418181512'
+  alias: Remote - Play RMF24
+  description: ''
+  trigger:
+  - platform: mqtt
+    topic: hass/script/rmf24
+  condition: []
+  action:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.googlehome8430
+    data:
+      media_content_id: media-source://radio_browser/7c207b66-3cac-43ce-b884-8876d196d0c9
+      media_content_type: audio/mpeg
+    metadata:
+      title: RMF24
+      thumbnail: https://www.rmf24.pl/i/2022/favicon/apple-icon-120x120.png
+      media_class: music
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://radio_browser
+      - media_content_type: music
+        media_content_id: media-source://radio_browser/country/PL
+  mode: single
+- id: '1674428473695'
+  alias: Remote - Play RMF FM
+  description: ''
+  trigger:
+  - platform: mqtt
+    topic: hass/script/rmffm
+  condition: []
+  action:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.googlehome8430
+    data:
+      media_content_id: media-source://radio_browser/399b7c2a-6680-11e8-b15b-52543be04c81
+      media_content_type: audio/mpeg
+    metadata:
+      title: RMF FM
+      thumbnail: https://www.rmf.fm/inc/img/favicon/apple-icon-120x120.png?3
+      media_class: music
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://radio_browser
+      - media_content_type: music
+        media_content_id: media-source://radio_browser/country/PL
+  mode: single
+- id: '1674428629826'
+  alias: Remote - Stop player
+  description: ''
+  trigger:
+  - platform: mqtt
+    topic: hass/script/stop_player
+  condition: []
+  action:
+  - service: media_player.media_stop
+    data: {}
+    target:
+      device_id: fe99b17a2f07d38ab0f8e8ac3dc3a19e
+  mode: single
+- id: '1674428765176'
+  alias: Remote - Alarm off
+  description: ''
+  trigger:
+  - platform: mqtt
+    topic: hass/script/alarm_off
+  condition: []
+  action:
+  - type: turn_off
+    device_id: fb6cad1c3bcbe3fd6c1a747e2b482a76
+    entity_id: switch.pralnia_alarm_uzbrojony
+    domain: switch
+  - type: turn_off
+    device_id: fb6cad1c3bcbe3fd6c1a747e2b482a76
+    entity_id: switch.pralnia_syrena
+    domain: switch
+  mode: single
+- id: '1674431521831'
+  alias: Remote - Play RMF MAXX
+  description: ''
+  trigger:
+  - platform: mqtt
+    topic: hass/script/rmfmaxx
+  condition: []
+  action:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.googlehome8430
+    data:
+      media_content_id: media-source://radio_browser/65cd1362-71ab-4829-8a4a-f530caf3a465
+      media_content_type: audio/aac
+    metadata:
+      title: Radio RMF MAXXX
+      thumbnail: https://cdn.onlineradiobox.com/img/l/4/1294.v9.png
+      media_class: music
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://radio_browser
+      - media_content_type: music
+        media_content_id: media-source://radio_browser/country/PL
+  mode: single
+- id: '1674728668481'
+  alias: Logging Webhook
+  description: ''
+  trigger:
+  - platform: webhook
+    webhook_id: log
+  condition: []
+  action:
+  - service: logbook.log
+    data:
+      message: '{{ trigger.data }}'
+      name: Webhook Log
+  mode: single
+- &id001
+  id: '1676025732992'
+  alias: Remote - battery below 20%
+  description: ''
+  trigger:
+  - type: voltage
+    platform: device
+    device_id: 254bf975edff8b81bd787ccf66b82874
+    entity_id: sensor.pilot_bateria
+    domain: sensor
+    below: 20
+    for:
+      hours: 1
+      minutes: 0
+      seconds: 0
+  condition: []
+  action:
+  - service: notify.notify
+    data:
+      message: 'Pilot: niski poziom baterii'
+  mode: single
+- *id001
+- *id001
+- id: '1676025900605'
+  alias: Remote - battery below 10%
+  description: ''
+  trigger:
+  - type: voltage
+    platform: device
+    device_id: 254bf975edff8b81bd787ccf66b82874
+    entity_id: sensor.pilot_bateria
+    domain: sensor
+    below: 10
+    for:
+      hours: 1
+      minutes: 0
+      seconds: 0
+  condition: []
+  action:
+  - service: notify.notify
+    data:
+      message: 'Pilot: bardzo niski poziom baterii'
+  mode: single
+- id: '1676277991301'
+  alias: TV - high power consumption
+  description: ''
+  trigger:
+  - type: power
+    platform: device
+    device_id: 23e3bb3f6727b4247a6e196fcdf52e81
+    entity_id: sensor.smart_plug_a_pobor_pradu
+    domain: sensor
+    above: 10
+    below: 20
+    for:
+      hours: 0
+      minutes: 30
+      seconds: 0
+  condition: []
+  action:
+  - service: notify.notify
+    data:
+      message: 'TV: wysoki pobór prądu w czuwaniu'
+  mode: single
+- id: '1676726112306'
+  alias: Bedroom extra button
+  description: ''
+  trigger:
+  - type: powered
+    platform: device
+    device_id: 10b9b3fd17446c02f634bca965791307
+    entity_id: binary_sensor.sypialnia_przycisk_dodatkowy
+    domain: binary_sensor
+  condition: []
+  action:
+  - type: toggle
+    device_id: 88a3032872ca555d07799a6305e691cf
+    entity_id: switch.smart_plug_d_0
+    domain: switch
+  mode: single
+- id: '1679142714960'
+  alias: Laundry room security breach notification
+  description: ''
+  trigger:
+  - platform: device
+    type: turned_on
+    device_id: fb6cad1c3bcbe3fd6c1a747e2b482a76
+    entity_id: switch.pralnia_syrena
+    domain: switch
+  condition: []
+  action:
+  - service: notify.notify
+    data:
+      message: Włamanie do pralni!
+  - service: notify.persistent_notification
+    data:
+      message: Włamanie do pralni!
+  mode: single
+- id: '1679216934024'
+  alias: Remote - Play Radio 357
+  description: ''
+  trigger:
+  - platform: mqtt
+    topic: hass/script/radio357
+  condition: []
+  action:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.googlehome8430
+    data:
+      media_content_id: media-source://radio_browser/e3c8273c-f0d6-4d73-b922-00d67964ff67
+      media_content_type: audio/aac
+    metadata:
+      title: Radio 357
+      thumbnail: https://radio357.pl/wp-content/themes/customTpl/img/favicon.ico
+      media_class: music
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://radio_browser
+      - media_content_type: music
+        media_content_id: media-source://radio_browser/country/PL
+  mode: single
+- id: '1679217055540'
+  alias: Remote - Play Antyradio
+  description: ''
+  trigger:
+  - platform: mqtt
+    topic: hass/script/antyradio
+  condition: []
+  action:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.googlehome8430
+    data:
+      media_content_id: media-source://radio_browser/f4dfff67-876a-4f2d-b49a-7bb643f4665d
+      media_content_type: audio/mpeg
+    metadata:
+      title: Antyradio
+      thumbnail: ''
+      media_class: music
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://radio_browser
+      - media_content_type: music
+        media_content_id: media-source://radio_browser/country/PL
+  mode: single
+- id: '1679217196126'
+  alias: Remote - Play RMF Classic
+  description: ''
+  trigger:
+  - platform: mqtt
+    topic: hass/script/rmfclassic
+  condition: []
+  action:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.googlehome8430
+    data:
+      media_content_id: media-source://radio_browser/6c800ca2-7e1e-4020-a026-57f55de88e74
+      media_content_type: audio/mpeg
+    metadata:
+      title: RMF Classic
+      thumbnail: https://radiointernetowe.online/wp-content/uploads/2021/06/rmf-classic.png
+      media_class: music
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://radio_browser
+      - media_content_type: music
+        media_content_id: media-source://radio_browser/country/PL
+  mode: single
+- id: '1679217442881'
+  alias: Remote - Play random podcast
+  description: ''
+  trigger:
+  - platform: mqtt
+    topic: hass/script/podcast
+  condition: []
+  action:
+  - service: script.albert_play_random_podcast
+    data: {}
+  - service: script.play_audiobook
+    data: {}
+  mode: single
+- id: '1679225243711'
+  alias: Remote - Play Nowy Świat
+  description: ''
+  trigger:
+  - platform: mqtt
+    topic: hass/script/nowyswiat
+  condition: []
+  action:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.googlehome8430
+    data:
+      media_content_id: media-source://radio_browser/872b4efa-0038-4c06-a9f4-1dc98892478f
+      media_content_type: audio/aac
+    metadata:
+      title: Radio Nowy Świat
+      thumbnail: https://nowyswiat.online/assets/favicons/apple-icon-120x120.png
+      media_class: music
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://radio_browser
+      - media_content_type: music
+        media_content_id: media-source://radio_browser/country/PL
+  mode: single
+- id: '1679225291065'
+  alias: Remote - Play TOK FM
+  description: ''
+  trigger:
+  - platform: mqtt
+    topic: hass/script/tokfm
+  condition: []
+  action:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.googlehome8430
+    data:
+      media_content_id: media-source://radio_browser/c7915f33-f401-4ab4-9f49-dcc1cce15ed6
+      media_content_type: audio/mpeg
+    metadata:
+      title: TOK FM
+      thumbnail: https://static.im-g.pl/im/6/7455/m7455556.gif
+      media_class: music
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://radio_browser
+      - media_content_type: music
+        media_content_id: media-source://radio_browser/country/PL
+  mode: single
+- id: '1679225398294'
+  alias: Remote - Volume up
+  description: ''
+  trigger:
+  - platform: mqtt
+    topic: hass/script/volume_up
+  condition: []
+  action:
+  - service: media_player.volume_up
+    data: {}
+    target:
+      entity_id: media_player.googlehome8430
+  mode: single
+- id: '1679225398294'
+  alias: Remote - Volume up
+  description: ''
+  trigger:
+  - platform: mqtt
+    topic: hass/script/volume_down
+  condition: []
+  action:
+  - service: media_player.volume_down
+    data: {}
+    target:
+      entity_id: media_player.googlehome8430
+  mode: single
+- id: '1679225487263'
+  alias: Remote - Volume down
+  description: ''
+  trigger:
+  - platform: mqtt
+    topic: hass/script/volume_down
+  condition: []
+  action:
+  - service: media_player.volume_down
+    data: {}
+    target:
+      entity_id: media_player.googlehome8430
+  mode: single
+- id: '1679249210102'
+  alias: Pralka - set Pranie
+  description: ''
+  trigger:
+  - type: power
+    platform: device
+    device_id: 23e3bb3f6727b4247a6e196fcdf52e81
+    entity_id: sensor.smart_plug_a_pobor_pradu
+    domain: sensor
+    above: 10
+    for:
+      hours: 0
+      minutes: 3
+      seconds: 0
+  condition:
+  - condition: state
+    entity_id: input_select.pralka_status
+    state: Wyłączona
+  action:
+  - service: input_select.set_options
+    data:
+      options: Pranie
+    target:
+      entity_id: input_select.pralka_status
+  mode: single
+- &id002
+  id: '1679249315725'
+  alias: Pralka - set Suszenie
+  description: ''
+  trigger:
+  - type: power
+    platform: device
+    device_id: 23e3bb3f6727b4247a6e196fcdf52e81
+    entity_id: sensor.smart_plug_a_pobor_pradu
+    domain: sensor
+    above: 700
+    for:
+      hours: 0
+      minutes: 3
+      seconds: 0
+    below: 1700
+  condition:
+  - condition: state
+    entity_id: input_select.pralka_status
+    state: Pranie
+  action:
+  - service: input_select.set_options
+    data:
+      options: Suszenie
+    target:
+      entity_id: input_select.pralka_status
+  mode: single
+- *id002
+- id: '1679249562821'
+  alias: Pralka - set Wyłączona
+  description: ''
+  trigger:
+  - type: power
+    platform: device
+    device_id: 23e3bb3f6727b4247a6e196fcdf52e81
+    entity_id: sensor.smart_plug_a_pobor_pradu
+    domain: sensor
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+    below: 1
+  condition:
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: input_select.pralka_status
+      state: Pranie
+    - condition: state
+      entity_id: input_select.pralka_status
+      state: Suszenie
+  action:
+  - service: input_select.set_options
+    data:
+      options: Wyłączona
+    target:
+      entity_id: input_select.pralka_status
+  - service: notify.notify
+    data:
+      message: Pranie gotowe do wyjęcia
+  mode: single

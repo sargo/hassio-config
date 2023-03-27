@@ -1,0 +1,316 @@
+play_audiobook:
+  alias: Wiktor - Play random podcast
+  sequence:
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.googlehome7904
+      media_content_id: "{{ ['https://radionaukowe.pl/podcast-player/3042/jak-odpowiadac-na-dzieciece-pytania-odcinek-okolicznosciowy-na-dzien-dziecka-e45.mp3',\n\
+        \   'https://radionaukowe.pl/podcast-player/3072/czemu-woda-jest-przezroczysta-i-inne-pytania-w-1-odcinku-lamu.mp3',\n\
+        \   'https://radionaukowe.pl/podcast-player/3081/czy-ludzie-kiedys-poleca-na-jowisza.mp3',\n\
+        \   'https://radionaukowe.pl/podcast-player/3093/czy-mozemy-zabic-wszystkie-komary-lamu-odc-3.mp3',\n\
+        \   'https://radionaukowe.pl/podcast-player/3102/dlaczego-niebo-jest-niebieskie-i-jest-wysoko-lamu-odc-4.mp3',\n\
+        \   'https://radionaukowe.pl/podcast-player/3110/czy-przed-ludzmi-byla-inna-cywilizacja-lamu-odc-5.mp3',\n\
+        \   'https://radionaukowe.pl/podcast-player/3116/skad-sie-wzial-gatunek-ludzki-lamu-odc-6.mp3',\n\
+        \   'https://radionaukowe.pl/podcast-player/3119/jak-dzialaja-czarne-dziury-lamu-odc-7.mp3',\n\
+        \   'https://radionaukowe.pl/podcast-player/3131/jak-zrobily-sie-klocki-lamu-odc-8.mp3',\n\
+        \   'https://radionaukowe.pl/podcast-player/4124/jak-powstaje-zloto-jak-czlowiek-zmienia-klimat-dlaczego-w-lato-jest-cieplo-01-lamu22.mp3',\n\
+        \   'https://radionaukowe.pl/podcast-player/3141/jak-stworzyl-sie-wszechswiat-czemu-sie-skonczy-lamu-odc-9.mp3',\n\
+        \   'https://radionaukowe.pl/podcast-player/4149/skad-sie-wziela-droga-mleczna-dlaczego-zyjemy-na-ziemi-04-lamu22.mp3',\n\
+        \   'https://radionaukowe.pl/podcast-player/4140/dlaczego-mydlo-robi-banki-czy-platki-sniegu-sa-niepowtarzalne-03-lamu22.mp3',\n\
+        \   'https://radionaukowe.pl/podcast-player/4164/dlaczego-ptaki-moga-byc-niebieskie-a-psy-nie-moga-jak-kameleony-zmieniaja-kolor-06-lamu22.mp3',\n\
+        \   'https://radionaukowe.pl/podcast-player/4157/skad-sie-biora-siuski-dlaczego-jak-jest-goraco-to-nie-chce-sie-jesc-05-lamu22.mp3',\n\
+        \   'https://radionaukowe.pl/podcast-player/4173/dlaczego-banknoty-maja-wartosc-skad-wynalazca-zegarka-wiedzial-ktora-godzina-08-lamu22.mp3',\n\
+        \   'https://radionaukowe.pl/podcast-player/4171/jak-pajaki-chodza-po-suficie-czemu-psy-maja-mokre-nosy-07-lamu22.mp3',\n\
+        \   'https://radionaukowe.pl/podcast-player/4185/jak-sie-tworzy-skora-skad-sie-biora-laskotki-co-to-jest-dna-09-lamu22.mp3',\n\
+        \   'https://radionaukowe.pl/podcast-player/4200/jak-od-wilkow-moglo-powstac-tyle-ras-osob-jak-stworzyly-sie-dinozaury-kiedy-ludzie-wygina-10-lamu-2022.mp3']\
+        \ | random }}\n"
+      media_content_type: music
+    entity_id: media_player.googlehome7904
+  mode: single
+albert_prosze_o_spokoj:
+  alias: Albert - proszę o spokój
+  sequence:
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.googlehome3855
+      volume_level: 0.7
+    entity_id: media_player.googlehome3855
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.googlehome3855
+      media_content_id: https://s3.eu-west-1.amazonaws.com/audio.lichota.pl/prosze-o-spokoj.mp3
+      media_content_type: music
+    entity_id: media_player.googlehome3855
+  - delay: 5
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.googlehome3855
+      volume_level: 0.33
+    entity_id: media_player.googlehome3855
+  mode: single
+albert_play_random_podcast:
+  alias: Albert - Play random podcast
+  sequence:
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.pokoj_alberta
+      media_content_id: "{{ ['https://radionaukowe.pl/podcast-player/3042/jak-odpowiadac-na-dzieciece-pytania-odcinek-okolicznosciowy-na-dzien-dziecka-e45.mp3',\n\
+        \   'https://radionaukowe.pl/podcast-player/3072/czemu-woda-jest-przezroczysta-i-inne-pytania-w-1-odcinku-lamu.mp3',\n\
+        \   'https://radionaukowe.pl/podcast-player/3081/czy-ludzie-kiedys-poleca-na-jowisza.mp3',\n\
+        \   'https://radionaukowe.pl/podcast-player/3093/czy-mozemy-zabic-wszystkie-komary-lamu-odc-3.mp3',\n\
+        \   'https://radionaukowe.pl/podcast-player/3102/dlaczego-niebo-jest-niebieskie-i-jest-wysoko-lamu-odc-4.mp3',\n\
+        \   'https://radionaukowe.pl/podcast-player/3110/czy-przed-ludzmi-byla-inna-cywilizacja-lamu-odc-5.mp3',\n\
+        \   'https://radionaukowe.pl/podcast-player/3116/skad-sie-wzial-gatunek-ludzki-lamu-odc-6.mp3',\n\
+        \   'https://radionaukowe.pl/podcast-player/3119/jak-dzialaja-czarne-dziury-lamu-odc-7.mp3',\n\
+        \   'https://radionaukowe.pl/podcast-player/3131/jak-zrobily-sie-klocki-lamu-odc-8.mp3',\n\
+        \   'https://radionaukowe.pl/podcast-player/4124/jak-powstaje-zloto-jak-czlowiek-zmienia-klimat-dlaczego-w-lato-jest-cieplo-01-lamu22.mp3',\n\
+        \   'https://radionaukowe.pl/podcast-player/3141/jak-stworzyl-sie-wszechswiat-czemu-sie-skonczy-lamu-odc-9.mp3',\n\
+        \   'https://radionaukowe.pl/podcast-player/4149/skad-sie-wziela-droga-mleczna-dlaczego-zyjemy-na-ziemi-04-lamu22.mp3',\n\
+        \   'https://radionaukowe.pl/podcast-player/4140/dlaczego-mydlo-robi-banki-czy-platki-sniegu-sa-niepowtarzalne-03-lamu22.mp3',\n\
+        \   'https://radionaukowe.pl/podcast-player/4164/dlaczego-ptaki-moga-byc-niebieskie-a-psy-nie-moga-jak-kameleony-zmieniaja-kolor-06-lamu22.mp3',\n\
+        \   'https://radionaukowe.pl/podcast-player/4157/skad-sie-biora-siuski-dlaczego-jak-jest-goraco-to-nie-chce-sie-jesc-05-lamu22.mp3',\n\
+        \   'https://radionaukowe.pl/podcast-player/4173/dlaczego-banknoty-maja-wartosc-skad-wynalazca-zegarka-wiedzial-ktora-godzina-08-lamu22.mp3',\n\
+        \   'https://radionaukowe.pl/podcast-player/4171/jak-pajaki-chodza-po-suficie-czemu-psy-maja-mokre-nosy-07-lamu22.mp3',\n\
+        \   'https://radionaukowe.pl/podcast-player/4185/jak-sie-tworzy-skora-skad-sie-biora-laskotki-co-to-jest-dna-09-lamu22.mp3',\n\
+        \   'https://radionaukowe.pl/podcast-player/4200/jak-od-wilkow-moglo-powstac-tyle-ras-osob-jak-stworzyly-sie-dinozaury-kiedy-ludzie-wygina-10-lamu-2022.mp3']\
+        \ | random }}\n"
+      media_content_type: music
+    entity_id: media_player.pokoj_alberta
+  mode: single
+'1642876463386':
+  alias: Albert - proszę do łóżka
+  sequence:
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.googlehome3855
+      volume_level: 0.7
+    entity_id: media_player.googlehome3855
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.googlehome3855
+      media_content_id: https://s3.eu-west-1.amazonaws.com/audio.lichota.pl/prosze-do-lozka.mp3
+      media_content_type: music
+    entity_id: media_player.googlehome3855
+  - delay: 5
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.googlehome3855
+      volume_level: 0.33
+    entity_id: media_player.googlehome3855
+  mode: single
+'1642876554245':
+  alias: Albert - proszę o ciszę
+  sequence:
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.googlehome3855
+      volume_level: 0.7
+    entity_id: media_player.googlehome3855
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.googlehome3855
+      media_content_id: https://s3.eu-west-1.amazonaws.com/audio.lichota.pl/prosze-o-cisze.mp3
+      media_content_type: music
+    entity_id: media_player.googlehome3855
+  - delay: 5
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.googlehome3855
+      volume_level: 0.33
+    entity_id: media_player.googlehome3855
+  mode: single
+'1642876612731':
+  alias: Albert - proszę się nie bić
+  sequence:
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.googlehome3855
+      volume_level: 0.7
+    entity_id: media_player.googlehome3855
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.googlehome3855
+      media_content_id: https://s3.eu-west-1.amazonaws.com/audio.lichota.pl/prosze-sie-nie-bic.mp3
+      media_content_type: music
+    entity_id: media_player.googlehome3855
+  - delay: 5
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.googlehome3855
+      volume_level: 0.33
+    entity_id: media_player.googlehome3855
+  mode: single
+'1642877022941':
+  alias: Albert - proszę do swoich pokoi
+  sequence:
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.googlehome3855
+      volume_level: 0.7
+    entity_id: media_player.googlehome3855
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.googlehome3855
+      media_content_id: https://s3.eu-west-1.amazonaws.com/audio.lichota.pl/prosze-do-swoich-pokoi.mp3
+      media_content_type: music
+    entity_id: media_player.googlehome3855
+  - delay: 5
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.googlehome3855
+      volume_level: 0.33
+    entity_id: media_player.googlehome3855
+  mode: single
+'1642877093583':
+  alias: Wiktor - proszę do swoich pokoi
+  sequence:
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.googlehome9885
+      volume_level: 0.7
+    entity_id: media_player.googlehome9885
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.googlehome9885
+      media_content_id: https://s3.eu-west-1.amazonaws.com/audio.lichota.pl/prosze-do-swoich-pokoi.mp3
+      media_content_type: music
+    entity_id: media_player.googlehome9885
+  - delay: 5
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.googlehome9885
+      volume_level: 0.33
+    entity_id: media_player.googlehome9885
+  mode: single
+'1642877125519':
+  alias: Wiktor - proszę do łóżka
+  sequence:
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.googlehome9885
+      volume_level: 0.7
+    entity_id: media_player.googlehome9885
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.googlehome9885
+      media_content_id: https://s3.eu-west-1.amazonaws.com/audio.lichota.pl/prosze-do-lozka.mp3
+      media_content_type: music
+    entity_id: media_player.googlehome9885
+  - delay: 5
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.googlehome9885
+      volume_level: 0.33
+    entity_id: media_player.googlehome9885
+  mode: single
+'1642877153193':
+  alias: Wiktor - proszę o ciszę
+  sequence:
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.googlehome9885
+      volume_level: 0.7
+    entity_id: media_player.googlehome9885
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.googlehome9885
+      media_content_id: https://s3.eu-west-1.amazonaws.com/audio.lichota.pl/prosze-o-cisze.mp3
+      media_content_type: music
+    entity_id: media_player.googlehome9885
+  - delay: 5
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.googlehome9885
+      volume_level: 0.33
+    entity_id: media_player.googlehome9885
+  mode: single
+'1642877182969':
+  alias: Wiktor - proszę o spokój
+  sequence:
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.googlehome9885
+      volume_level: 0.7
+    entity_id: media_player.googlehome9885
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.googlehome9885
+      media_content_id: https://s3.eu-west-1.amazonaws.com/audio.lichota.pl/prosze-o-spokój.mp3
+      media_content_type: music
+    entity_id: media_player.googlehome9885
+  - delay: 5
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.googlehome9885
+      volume_level: 0.33
+    entity_id: media_player.googlehome9885
+  mode: single
+'1642877394439':
+  alias: Wiktor - proszę się nie bić
+  sequence:
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.googlehome9885
+      volume_level: 0.7
+    entity_id: media_player.googlehome9885
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.googlehome9885
+      media_content_id: https://s3.eu-west-1.amazonaws.com/audio.lichota.pl/prosze-sie-nie-bic.mp3
+      media_content_type: music
+    entity_id: media_player.googlehome9885
+  - delay: 5
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.googlehome9885
+      volume_level: 0.33
+    entity_id: media_player.googlehome9885
+  mode: single
+cast_dashboard:
+  alias: Cast Dashboard to TV
+  sequence:
+  - data:
+      dashboard_path: lovelace
+      entity_id: media_player.salon_tv
+      view_path: default
+    service: cast.show_lovelace_view
+  mode: single
+rmf24:
+  alias: RMF24
+  sequence:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.googlehome8430
+    data:
+      media_content_id: media-source://radio_browser/7c207b66-3cac-43ce-b884-8876d196d0c9
+      media_content_type: audio/mpeg
+    metadata:
+      title: RMF24
+      thumbnail: https://www.rmf24.pl/i/2022/favicon/apple-icon-120x120.png
+      media_class: music
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://radio_browser
+      - media_content_type: music
+        media_content_id: media-source://radio_browser/country/PL
+  mode: single
+open_garage_door:
+  alias: Garage - open
+  sequence:
+  - service: rest_command.open_garage_door
+    data: {}
+  mode: single
+stop_garage_door:
+  alias: Garage - stop
+  sequence:
+  - service: rest_command.stop_garage_door
+    data: {}
+  mode: single
+close_garage_door:
+  alias: Garage - close
+  sequence:
+  - service: rest_command.close_garage_door
+    data: {}
+  mode: single
